@@ -1,3 +1,6 @@
+body {
+    margin: 0;
+}
 #wrapper {
     overflow: hidden;
 }
@@ -13,7 +16,7 @@
     width: 100%;
     text-align: center;
     color: #ccc;
-    font-size: 36px;
+    font-size: 60px;
 
     padding: 100px 0;
     -webkit-transform-style: preserve-3d;
@@ -25,7 +28,6 @@
 }
 
 .current {
-    position: relative;
     color: #333;
 }
 

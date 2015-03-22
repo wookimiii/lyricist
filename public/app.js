@@ -23,7 +23,7 @@ pres.vm = (function () {
         vm.slides = new pres.Slides();
 
         // index of the current slide
-        vm.current = m.prop(0);
+        vm.current = m.prop(-1);
     }
 
     vm.add = function add(text) {
@@ -32,18 +32,14 @@ pres.vm = (function () {
     }
 
     vm.goTo = function select(index) {
-        console.log(index);
         vm.current(index);
     }
 
     vm.yPosition = function () {
-        console.log("updating y position", vm.current());
         var currentSlide = getCurrentDiv();
         if (!currentSlide) return;
         var offset = getSlideOffset(vm.current());
-        console.log("a", offset)
         offset = (window.innerHeight/2) - offset;
-        console.log("b", offset)
         return offset + 'px';
     }
 
@@ -58,7 +54,6 @@ pres.vm = (function () {
             height = height + slides[i].clientHeight; 
         }
         height = height + (slides[i].clientHeight/2);
-        console.log("slides height", height)
         return height;
     }
 
@@ -83,7 +78,9 @@ pres.view = function view() {
 
 function slidesView() {
     return pres.vm.slides.map(function(slide, i) {
-        return m("div.slide", {onclick: pres.vm.goTo.bind(pres.vm, i)}, [
+        var current =  (pres.vm.current()) === i ? 'current' : "";
+
+        return m("div.slide", {onclick: pres.vm.goTo.bind(pres.vm, i), class: current}, [
                  m("div.lyrics", slide.htmlText())
         ]);
     });
@@ -93,11 +90,16 @@ var body = document.getElementsByTagName("body")[0];
 m.module(body, {controller: pres.controller, view: pres.view});
 
 function loadSlides() {
-    m.startComputation();
     pres.vm.add("Slide1");
     pres.vm.add("Slide2\nwith multiple\nlines");
     pres.vm.add("Slide3\nwith 3\nlines");
     m.endComputation();
+    pres.vm.goTo(0);
 }
 
-loadSlides();
+document.addEventListener("DOMContentLoaded", function(event) { 
+    loadSlides();
+    setTimeout(function () {
+        m.endComputation();
+    }, 30);
+});
