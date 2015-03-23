@@ -1,11 +1,19 @@
 var http = require('http');
-var fs = require('fs');
 var st = require('st');
+var fs = require('fs');
 
 var mount = st({ path: __dirname + '/public', url: '/', passthrough: true })
 // Configure our HTTP server to respond with Hello World to all requests.
 var server = http.createServer(function (req, res) {
-    mount(req, res, function() {        res.end('this is not a static file');
+    if (req.url === "/" || req.url== "/?/") {
+        res.setHeader("Content-Type", "text/html");
+        var html = fs.readFileSync("./public/index.html");
+        res.end(html);
+        return;
+    }
+
+    mount(req, res, function() {
+        res.end('this is not a static file');
     });
 });
 

@@ -4,6 +4,7 @@ body {
 #wrapper {
     overflow: hidden;
 }
+
 #presentation {
     position: relative;
     -webkit-transition: all 0.5s ease-in-out;
@@ -12,6 +13,7 @@ body {
     -ms-transition: all 0.5s ease-in-out;
     transition: all 0.5s ease-in-out;
 }
+
 .slide {
     width: 100%;
     text-align: center;
@@ -23,8 +25,14 @@ body {
     -moz-transform-style: preserve-3d;
     -transform-style: preserve-3d;
 }
-.space {
-    height: 100vh;
+
+.lyrics {
+    margin: 0;
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    -ms-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
 }
 
 .current {
@@ -45,4 +53,16 @@ body {
     right: 0;
     height: 30px;
     widht: 30px;
+}
+
+
+#container {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px;
+}
+#text {
+    position: relative;
+    width: 100%;
+    min-height: 500px;
 }
