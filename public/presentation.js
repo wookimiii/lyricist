@@ -64,8 +64,7 @@ var presentationModule = (function() {
         console.log(ctrl);
         return m("div#wrapper", {style: {height: window.innerHeight + 'px'}},
             m("div#presentation", {style: {top: module.vm.yPosition()}},
-                [ //m("div.space"),
-                    slidesView(ctrl.slides),
+                [   slidesView(ctrl.slides),
                     m("div.space"),
                     m("div.marker"),
                     m("div#debug", module.vm.yPosition())]

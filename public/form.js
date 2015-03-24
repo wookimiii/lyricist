@@ -5,13 +5,16 @@ form.controller = function() {
 }
 
 form.view = function(ctrl) {
-    return m("div#container", [
-        m("textarea#text", {value: ctrl.text}),
-        m("input#submit", {
-            type: 'submit',
-            onclick: form.submit
-        })
-    ]);
+    return [
+        menuBar(),
+        m("div#container",[
+            m("textarea#text", {value: ctrl.text}),
+            m("input#submit", {
+                type: 'submit',
+                onclick: form.submit
+            })
+        ])
+    ];
 }
 
 form.submit = function (e) {

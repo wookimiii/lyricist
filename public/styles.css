@@ -66,3 +66,28 @@ body {
     width: 100%;
     min-height: 500px;
 }
+
+.menu {
+    position: fixed;
+    height: 100%;
+    z-index: 9;
+    background: rgb(200, 200, 200);
+    padding: 0 5px;
+    right: 100%;
+    width: 100px;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.menu-open {
+    position: relative;
+    left: 100px;
+}
+
+.menu-open .menu{
+    left: 0;
+    right: auto;
+}
