@@ -7,15 +7,26 @@ var Presentation = require('./presentation.js');
 var MenuBar = require('./MenuBar.js');
 var Form = require('./Form.js');
 
+var SockJS = require('sockjs-client');
+var sock = new SockJS('/state');
+
+sock.onopen = function() {
+    console.log('open');
+};
+
+sock.onclose = function() {
+    console.log('close');
+};
+
 var App = React.createClass({
     getInitialState: function () {
         return {
             page: "form",
-            text: "Welcome to the Slide Show;;This is the end"
+            text: "Welcome to the Slide Show;;This is the end",
+            currentSlide: 0
         };
     },
     render: function() {
-        console.log(this.state);
         var page = this.state.page;
         return (
             <div>
@@ -27,7 +38,7 @@ var App = React.createClass({
 
     show: function (page) {
        var pages = {
-           "presentation": <Presentation text={this.state.text}/>,
+           "presentation": <Presentation text={this.state.text} current={currentSlide}/>,
            "form": this.form()
        }
        return pages[page];
@@ -35,18 +46,32 @@ var App = React.createClass({
 
     form: function () {
         return (
-            <Form text={this.state.text} update={this.updateText.bind(this)}/>
+            <Form text={this.state.text} update={this.updateText}/>
         );
     },
 
     updateText: function(text) {
         this.setState({text: text});
+        updateOthers({text: text});
     },
+
     gotoPage: function(page) {
         this.setState({page: page});
+    },
+
+    componentDidUpdate: function (prevProps, prevState) {
+        console.log("Update to server:", this.state);
     }
 });
 
+function updateOthers(state) {
+    sock.send(JSON.stringify(state));
+}
 
-
-React.render(<App />, document.body);
+var app = React.render(<App />, document.body);
+sock.onmessage = function(e) {
+    var data = JSON.parse(e.data);
+    if (data.text !== app.state.text) {
+        app.setState(data);
+    }
+};
