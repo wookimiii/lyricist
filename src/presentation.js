@@ -65,7 +65,6 @@ var Presentation = React.createClass({
                 <div id='presentation' style={presStyle}>
                     {slides}
                 </div>
-                <div className='marker'></div>
             </div>
         )
     },
