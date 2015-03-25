@@ -15,7 +15,8 @@
     "react": "^0.13.1",
     "browserify": "^9.0.3",
     "watchify": "^2.6.0",
-    "reactify": "^1.1.0"
+    "reactify": "^1.1.0",
+    "classnames": "^1.2.0"
   },
   "browserify": {
     "transform": [

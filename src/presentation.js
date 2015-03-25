@@ -49,8 +49,10 @@ var Presentation = React.createClass({
         var pres = this;
         var textList = splitBySlides(this.props.text);
         var slides = textList.map(function(t, i) {
+            console.log(pres.state.current, i);
+            var className = pres.state.current  === i ? 'current' : '';
             return (
-                <Slide text={t} onClick={pres.gotoSlide.bind(null, i)}/>
+                <Slide className={className} text={t} onClick={pres.gotoSlide.bind(null, i)}/>
             )
         });
 

@@ -1,24 +1,26 @@
-var form = {};
+/** @jsx React.DOM */
+var Form = React.createClass({
+    render: function(ctrl) {
+        var styles = {
+            boxSizing: 'border-box',
+            width: '100%',
+            padding: '10px'
+        };
 
-form.controller = function() {
-   this.text = TEXT || ""; 
-}
+        console.log("Form props: ", this.props);
+        return (
+            <div style={styles}>
+                <textarea id='text' onKeyUp={this.updateText}>{this.props.text}</textarea>
+            </div>
+        );
+    },
 
-form.view = function(ctrl) {
-    return [
-        menuBar(),
-        m("div#container",[
-            m("textarea#text", {value: ctrl.text}),
-            m("input#submit", {
-                type: 'submit',
-                onclick: form.submit
-            })
-        ])
-    ];
-}
+    updateText: function(e) {
+        console.log("update");
+        console.log(e.target.value);
+        this.props.update(e.target.value);
+    }
+    
+});
 
-form.submit = function (e) {
-    console.log(e);
-    TEXT = $("#text").val();
-    m.route("/");
-}
+module.exports = Form;
