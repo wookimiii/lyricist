@@ -18,7 +18,7 @@ var Presentation = React.createClass({
     getDefaultProps: function () {
        return {
            current: 0,
-           text: "Welcome to the Slide Show;;This is the end",
+           text: "Welcome to the Slide Show",
        };
     },
 
@@ -35,10 +35,10 @@ var Presentation = React.createClass({
         }
 
         // plus 1/2 the height of the current slide
-        height = height + (slides[i].clientHeight/2);
+        // height = height + (slides[i].clientHeight/2);
 
         // match the middle of the window
-        toppx = (window.innerHeight/2) - height;
+        toppx = (window.innerHeight/10) - height;
         return toppx;
     },
     render: function () {
@@ -71,7 +71,7 @@ var Presentation = React.createClass({
     },
 
     componentWillUpdate: function(nextProps, nextState) {
-        console.log("componentWillUpdate", this.state, nextProps, nextState);
+        // console.log("componentWillUpdate", this.state, nextProps, nextState);
     },
 });
 

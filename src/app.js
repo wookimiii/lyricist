@@ -25,7 +25,7 @@ var App = React.createClass({
     getInitialState: function () {
         return {
             page: "presentation",
-            text: "Blah;; Blah;; Welcome to;; the Slide Show;;This is the end",
+            text: "Welcome to the Slide Show",
             currentSlide: 0
         };
     },
@@ -80,18 +80,18 @@ var App = React.createClass({
     },
 
     componentDidUpdate: function (prevProps, prevState) {
-        console.log("Update to server:", this.state);
+        // console.log("Update to server:", this.state);
     }
 });
 
 function updateOthers(state) {
-    console.log('update others', state);
+    // console.log('update others', state);
     sock.send(JSON.stringify(state));
 }
 
 sock.onmessage = function(e) {
     var data = JSON.parse(e.data);
-    console.log("recevied update", data);
+    // console.log("recevied update", data);
     if (data.sys == "sync") {
         sock.send(JSON.stringify({
             text: app.state.text, 
