@@ -1,17 +1,20 @@
 /** @jsx React.DOM */
 
 // var React = require('react');
-window.React = React;
+React.initializeTouchEvents(true)
 
 var Presentation = require('./presentation.js');
 var MenuBar = require('./MenuBar.js');
 var Form = require('./Form.js');
+var app = null;
 
 var SockJS = require('sockjs-client');
 var sock = new SockJS('/state');
 
 sock.onopen = function() {
     console.log('open');
+    sock.send(JSON.stringify({sys: "sync"}));
+    app = React.render(<App />, document.body);
 };
 
 sock.onclose = function() {
@@ -21,8 +24,8 @@ sock.onclose = function() {
 var App = React.createClass({
     getInitialState: function () {
         return {
-            page: "form",
-            text: "Welcome to the Slide Show;;This is the end",
+            page: "presentation",
+            text: "Blah;; Blah;; Welcome to;; the Slide Show;;This is the end",
             currentSlide: 0
         };
     },
@@ -82,12 +85,19 @@ var App = React.createClass({
 });
 
 function updateOthers(state) {
+    console.log('update others', state);
     sock.send(JSON.stringify(state));
 }
 
-var app = React.render(<App />, document.body);
 sock.onmessage = function(e) {
     var data = JSON.parse(e.data);
+    console.log("recevied update", data);
+    if (data.sys == "sync") {
+        sock.send(JSON.stringify({
+            text: app.state.text, 
+            currentSlide: app.state.currentSlide
+        }));
+    }
     if (data.text && data.text !== app.state.text) {
         app.setState(data);
     }
@@ -95,4 +105,5 @@ sock.onmessage = function(e) {
     if (typeof data.currentSlide != 'undefined' && data.currentSlide !== app.state.currentSlide) {
         app.setState(data);
     }
+
 };

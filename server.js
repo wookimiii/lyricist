@@ -23,16 +23,22 @@ var CONNECTIONS = {};
 var socketServer = sockjs.createServer({ sockjs_url: SOCKJS_URL});
 
 socketServer.on('connection', function(conn) {
+    console.log(CONNECTIONS);
     CONNECTIONS[conn.id] = conn;
     conn.on('data', function(message) {
-        broadcast(message);
+        console.log(message);
+        broadcast(message, conn.id);
     });
     conn.on('close', function() {});
 });
 
-function broadcast(msg) {
+function broadcast(msg, emitter) {
     for (var id in CONNECTIONS) {
-        CONNECTIONS[id].write(msg);
+        console.log(id);
+        if (id !== emitter) {
+            console.log("writing to", id);
+            CONNECTIONS[id].write(msg);
+        }
     }
 }
 

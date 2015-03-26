@@ -1,9 +1,29 @@
 body {
     font-family: RobotoDraft, Roboto, sans-serif;
     margin: 0;
+    height: 100%;
 }
+
 #wrapper {
+    height: 100%;
     overflow: hidden;
+}
+
+
+@media only screen 
+and (min-device-width : 375px) 
+and (max-device-width : 667px) 
+and (orientation : portrait) { 
+    /* STYLES GO HERE */ 
+    #wrapper {
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #presentation {
+        top: 0px !important;
+    }
+
 }
 
 #presentation {
