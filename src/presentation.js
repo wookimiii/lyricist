@@ -17,12 +17,9 @@ function splitBySlides(str) {
 var Presentation = React.createClass({
     getDefaultProps: function () {
        return {
+           current: 0,
            text: "Welcome to the Slide Show;;This is the end",
        };
-    },
-
-    getInitialState: function () {
-        return {current: 0, top: "0px"};
     },
 
     getTopPosition: function (index) {
@@ -30,7 +27,7 @@ var Presentation = React.createClass({
         var height = 0;
         var toppx = 0;
         // early return
-        if (slides.length === 0) return;
+        if (slides.length === 0) return 0;
 
         // iterate through all the slides above this one
         for (var i=0; i < index; i++) {
@@ -44,20 +41,20 @@ var Presentation = React.createClass({
         toppx = (window.innerHeight/2) - height;
         return toppx;
     },
-
     render: function () {
         var pres = this;
         var textList = splitBySlides(this.props.text);
         var slides = textList.map(function(t, i) {
-            console.log(pres.state.current, i);
-            var className = pres.state.current  === i ? 'current' : '';
+            var className = pres.props.current  === i ? 'current' : '';
+            var onClick = pres.props.clickSlide.bind(null, i);
             return (
-                <Slide className={className} text={t} onClick={pres.gotoSlide.bind(null, i)}/>
+                <Slide className={className} text={t} onClick={onClick}/>
             )
         });
 
         var presStyle = {
-            top: this.state.top
+            top: this.getTopPosition(this.props.current) + 'px'
+            // top: '0px'
         };
 
         return (
@@ -70,18 +67,12 @@ var Presentation = React.createClass({
     },
 
     componentDidMount: function () {
-        console.log('presentation did update');
-        this.gotoSlide(0);
+        this.props.clickSlide(this.props.current || 0);
     },
 
     componentWillUpdate: function(nextProps, nextState) {
         console.log("componentWillUpdate", this.state, nextProps, nextState);
     },
-
-    gotoSlide: function(index) {
-        console.log("goToSlide", index);
-        this.setState({current: index, top: this.getTopPosition(index) + 'px'});
-    }
 });
 
 module.exports = Presentation;

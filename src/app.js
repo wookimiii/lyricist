@@ -38,7 +38,7 @@ var App = React.createClass({
 
     show: function (page) {
        var pages = {
-           "presentation": <Presentation text={this.state.text} current={currentSlide}/>,
+           "presentation": this.presentation(),
            "form": this.form()
        }
        return pages[page];
@@ -50,9 +50,26 @@ var App = React.createClass({
         );
     },
 
+    presentation: function () {
+        var props = {
+            text: this.state.text,
+            current: this.state.currentSlide,
+            clickSlide: this.gotoSlide
+        };
+
+        return (
+            <Presentation {...props} />
+        );
+    },
+
     updateText: function(text) {
         this.setState({text: text});
         updateOthers({text: text});
+    },
+
+    gotoSlide: function(i) {
+        this.setState({currentSlide: i});
+        updateOthers({currentSlide: i});
     },
 
     gotoPage: function(page) {
@@ -71,7 +88,11 @@ function updateOthers(state) {
 var app = React.render(<App />, document.body);
 sock.onmessage = function(e) {
     var data = JSON.parse(e.data);
-    if (data.text !== app.state.text) {
+    if (data.text && data.text !== app.state.text) {
+        app.setState(data);
+    }
+
+    if (typeof data.currentSlide != 'undefined' && data.currentSlide !== app.state.currentSlide) {
         app.setState(data);
     }
 };

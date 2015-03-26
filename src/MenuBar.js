@@ -44,8 +44,6 @@ var MenuBar = React.createClass({
         this.setState({visible: false});
     },
     gotoPage: function (page) {
-        console.log(page);
-        console.log(this.props);
         this.props.gotoPage(page);
     },
     overlayStyles: function () {
