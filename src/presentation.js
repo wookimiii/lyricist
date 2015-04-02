@@ -1,6 +1,7 @@
 /** @jsx React.DOM */
 // pres is for Presentation
 var Slide = require('./slide');
+var key = require('keymaster');
 
 var SLIDE_SPLIT_EXP = new RegExp("(^\s*$)|(;;)", "m");
 function splitBySlides(str) {
@@ -18,7 +19,7 @@ var Presentation = React.createClass({
     getDefaultProps: function () {
        return {
            current: 0,
-           text: "Welcome to the Slide Show",
+           text: "Welcome to the Slide Show blah",
        };
     },
 
@@ -46,7 +47,7 @@ var Presentation = React.createClass({
         var textList = splitBySlides(this.props.text);
         var slides = textList.map(function(t, i) {
             var className = pres.props.current  === i ? 'current' : '';
-            var onClick = pres.props.clickSlide.bind(null, i);
+            var onClick = pres.props.gotoSlide.bind(null, i);
             return (
                 <Slide className={className} text={t} onClick={onClick}/>
             )
@@ -67,12 +68,27 @@ var Presentation = React.createClass({
     },
 
     componentDidMount: function () {
-        this.props.clickSlide(this.props.current || 0);
+        this.props.gotoSlide(this.props.current || 0);
+        key('up', this.prevSlide);
+        key('down', this.nextSlide);
+        console.log("didMount", this.props);
+    },
+    
+    componentWillUnmount: function () {
+        key.unbind('up');
+        key.unbind('down');
     },
 
-    componentWillUpdate: function(nextProps, nextState) {
-        // console.log("componentWillUpdate", this.state, nextProps, nextState);
+    nextSlide: function () {
+        console.log("next slide", this.props);
+        var textList = splitBySlides(this.props.text);
+        var next = Math.min(textList.length, this.props.current + 1);
+        this.props.gotoSlide(next);
     },
+
+    prevSlide: function () {
+        this.props.gotoSlide(Math.max(0, this.props.current - 1));
+    }
 });
 
 module.exports = Presentation;

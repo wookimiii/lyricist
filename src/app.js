@@ -10,6 +10,7 @@ var app = null;
 
 var SockJS = require('sockjs-client');
 var sock = new SockJS('/state');
+var key = require('keymaster');
 
 sock.onopen = function() {
     console.log('open');
@@ -25,16 +26,17 @@ var App = React.createClass({
     getInitialState: function () {
         return {
             page: "presentation",
-            text: "Welcome to the Slide Show",
+            text: "Welcome to the Slide Show!",
             currentSlide: 0
         };
     },
     render: function() {
         var page = this.state.page;
         return (
-            <div>
+            <div onKeyPress={this.handleKeyPress}>
                 <MenuBar gotoPage={this.gotoPage}/>
                 {this.show(page)}
+
             </div>
         );
     },
@@ -57,7 +59,7 @@ var App = React.createClass({
         var props = {
             text: this.state.text,
             current: this.state.currentSlide,
-            clickSlide: this.gotoSlide
+            gotoSlide: this.gotoSlide
         };
 
         return (
@@ -81,6 +83,13 @@ var App = React.createClass({
 
     componentDidUpdate: function (prevProps, prevState) {
         // console.log("Update to server:", this.state);
+    },
+
+    componentDidMount: function () {
+        key('space', function (e) {  console.log('key press', e) });
+    },
+    componentWillUnmount: function () {
+        // key.unbind('space', 
     }
 });
 
@@ -94,7 +103,7 @@ sock.onmessage = function(e) {
     // console.log("recevied update", data);
     if (data.sys == "sync") {
         sock.send(JSON.stringify({
-            text: app.state.text, 
+            text: app.state.text,
             currentSlide: app.state.currentSlide
         }));
     }
