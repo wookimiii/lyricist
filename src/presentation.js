@@ -71,16 +71,14 @@ var Presentation = React.createClass({
         this.props.gotoSlide(this.props.current || 0);
         key('up', this.prevSlide);
         key('down', this.nextSlide);
-        console.log("didMount", this.props);
     },
-    
+
     componentWillUnmount: function () {
         key.unbind('up');
         key.unbind('down');
     },
 
     nextSlide: function () {
-        console.log("next slide", this.props);
         var textList = splitBySlides(this.props.text);
         var next = Math.min(textList.length, this.props.current + 1);
         this.props.gotoSlide(next);

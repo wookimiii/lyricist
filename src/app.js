@@ -13,13 +13,13 @@ var sock = new SockJS('/state');
 var key = require('keymaster');
 
 sock.onopen = function() {
-    console.log('open');
+    // console.log('open');
     sock.send(JSON.stringify({sys: "sync"}));
     app = React.render(<App />, document.body);
 };
 
 sock.onclose = function() {
-    console.log('close');
+    // console.log('close');
 };
 
 var App = React.createClass({
@@ -27,6 +27,7 @@ var App = React.createClass({
         return {
             page: "presentation",
             text: "Welcome to the Slide Show!",
+            blackOut: false,
             currentSlide: 0
         };
     },
@@ -34,9 +35,9 @@ var App = React.createClass({
         var page = this.state.page;
         return (
             <div onKeyPress={this.handleKeyPress}>
-                <MenuBar gotoPage={this.gotoPage}/>
+                <MenuBar gotoPage={this.gotoPage} toggleBlackout={this.toggleBlackout}/>
                 {this.show(page)}
-
+                <div id='blackout' className={this.state.blackout ? '' : 'hidden'}></div>
             </div>
         );
     },
@@ -44,8 +45,8 @@ var App = React.createClass({
     show: function (page) {
        var pages = {
            "presentation": this.presentation(),
-           "form": this.form()
-       }
+           "form": this.form(),
+       };
        return pages[page];
     },
 
@@ -81,15 +82,20 @@ var App = React.createClass({
         this.setState({page: page});
     },
 
+    toggleBlackout: function () {
+        this.setState({blackout: !this.state.blackout});
+    },
+
     componentDidUpdate: function (prevProps, prevState) {
         // console.log("Update to server:", this.state);
     },
 
     componentDidMount: function () {
-        key('space', function (e) {  console.log('key press', e) });
+        key('space', this.toggleBlackout);
     },
+
     componentWillUnmount: function () {
-        // key.unbind('space', 
+        key.unbind('space');
     }
 });
 

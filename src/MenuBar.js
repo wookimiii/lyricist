@@ -30,6 +30,7 @@ var MenuBar = React.createClass({
                         <h3>Navigate</h3>
                         <a onClick={this.gotoPage.bind(null, "form")}>Edit</a>
                         <a onClick={this.gotoPage.bind(null, "presentation")}>Present</a>
+                        <a onClick={this.props.toggleBlackout}>Blackout</a>
                     </div>
                     {overlay}
                 </div>
