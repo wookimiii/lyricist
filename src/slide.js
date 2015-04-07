@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 var cx = require('classnames');
-var touchStart = null;
+var Hammer = require('./HammerComponent');
 
 var Slide = React.createClass({
     getDefaultProps: function(){ return { text: "Slide..." } },
@@ -13,21 +13,12 @@ var Slide = React.createClass({
             lines.push(text[i]);
             lines.push(<br />);
         }
+
         return (
-            <div className={className} onClick={this.props.onClick} onTouchStart={this.touchStart}>
+            <Hammer component='div' className={className} onTap={this.props.onClick}>
                 <p className='lyrics'>{lines}</p>
-            </div>
+            </Hammer>
         );
-    },
-    touchStart: function (e) {
-        // e.preventDefault();
-        touchStartTime = new Date();
-    },
-    touchEnd: function (e) {
-        var touchEndTime = new Date();
-        if (touchEndTime - touchStartTime < 500) {
-            this.props.onClick();
-        }
     }
 });
 

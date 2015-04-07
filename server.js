@@ -31,6 +31,7 @@ socketServer.on('connection', function(conn) {
 });
 
 function broadcast(msg, emitter) {
+    console.log(msg);
     for (var id in CONNECTIONS) {
         if (id !== emitter) {
             CONNECTIONS[id].write(msg);

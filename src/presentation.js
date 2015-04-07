@@ -27,21 +27,23 @@ var Presentation = React.createClass({
         var slides = document.getElementsByClassName("slide");
         var height = 0;
         var toppx = 0;
+        index = Math.min(slides.length, index);
         // early return
         if (slides.length === 0) return 0;
 
         // iterate through all the slides above this one
         for (var i=0; i < index; i++) {
-            height = height + slides[i].clientHeight; 
+            height = height + slides[i].clientHeight;
         }
 
         // plus 1/2 the height of the current slide
         // height = height + (slides[i].clientHeight/2);
 
-        // match the middle of the window
+        // match the top of the window
         toppx = (window.innerHeight/10) - height;
         return toppx;
     },
+
     render: function () {
         var pres = this;
         var textList = splitBySlides(this.props.text);
@@ -68,9 +70,11 @@ var Presentation = React.createClass({
     },
 
     componentDidMount: function () {
-        this.props.gotoSlide(this.props.current || 0);
+        console.log("Presentation mount", this.props.current);
+        // this.props.gotoSlide(this.props.current || 0);
         key('up', this.prevSlide);
         key('down', this.nextSlide);
+        setTimeout(this.forceUpdate.bind(this), 1);
     },
 
     componentWillUnmount: function () {

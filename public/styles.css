@@ -80,15 +80,15 @@ and (orientation : portrait) {
     widht: 30px;
 }
 
-
 #container {
     box-sizing: border-box;
     width: 100%;
     padding: 10px;
 }
+
 #text {
     position: relative;
-    width: 100%;
+    width: 50%;
     min-height: 500px;
 }
 

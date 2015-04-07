@@ -62,6 +62,7 @@ var App = React.createClass({
             current: this.state.currentSlide,
             gotoSlide: this.gotoSlide
         };
+        console.log("Render presentation", props);
 
         return (
             <Presentation {...props} />
@@ -92,10 +93,14 @@ var App = React.createClass({
 
     componentDidMount: function () {
         key('space', this.toggleBlackout);
+        key('p', this.gotoPage.bind(null, 'presentation'));
+        key('e', this.gotoPage.bind(null, 'form'));
     },
 
     componentWillUnmount: function () {
         key.unbind('space');
+        key.unbind('p');
+        key.unbind('e');
     }
 });
 
@@ -106,7 +111,7 @@ function updateOthers(state) {
 
 sock.onmessage = function(e) {
     var data = JSON.parse(e.data);
-    // console.log("recevied update", data);
+    console.log("recevied update", data);
     if (data.sys == "sync") {
         sock.send(JSON.stringify({
             text: app.state.text,
