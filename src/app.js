@@ -6,21 +6,10 @@ React.initializeTouchEvents(true)
 var Presentation = require('./presentation.js');
 var MenuBar = require('./MenuBar.js');
 var Form = require('./Form.js');
+var Connection = require('./connection.js');
 var app = null;
 
-var SockJS = require('sockjs-client');
-var sock = new SockJS('/state');
 var key = require('keymaster');
-
-sock.onopen = function() {
-    // console.log('open');
-    sock.send(JSON.stringify({sys: "sync"}));
-    app = React.render(<App />, document.body);
-};
-
-sock.onclose = function() {
-    // console.log('close');
-};
 
 var App = React.createClass({
     getInitialState: function () {
@@ -62,7 +51,6 @@ var App = React.createClass({
             current: this.state.currentSlide,
             gotoSlide: this.gotoSlide
         };
-        console.log("Render presentation", props);
 
         return (
             <Presentation {...props} />
@@ -71,12 +59,12 @@ var App = React.createClass({
 
     updateText: function(text) {
         this.setState({text: text});
-        updateOthers({text: text});
+        connection.broadcast({text: text});
     },
 
     gotoSlide: function(i) {
         this.setState({currentSlide: i});
-        updateOthers({currentSlide: i});
+        connection.broadcast({currentSlide: i});
     },
 
     gotoPage: function(page) {
@@ -104,20 +92,21 @@ var App = React.createClass({
     }
 });
 
-function updateOthers(state) {
-    // console.log('update others', state);
-    sock.send(JSON.stringify(state));
+function onConnect() {
+    // console.log('open');
+    app = React.render(<App />, document.body);
+    connection.broadcast({sys: "sync"});
 }
 
-sock.onmessage = function(e) {
-    var data = JSON.parse(e.data);
-    console.log("recevied update", data);
-    if (data.sys == "sync") {
-        sock.send(JSON.stringify({
+function onMessage(data) {
+    if (data.sys === "sync") {
+        connection.broadcast({
             text: app.state.text,
             currentSlide: app.state.currentSlide
-        }));
+        });
+        return;
     }
+
     if (data.text && data.text !== app.state.text) {
         app.setState(data);
     }
@@ -125,5 +114,10 @@ sock.onmessage = function(e) {
     if (typeof data.currentSlide != 'undefined' && data.currentSlide !== app.state.currentSlide) {
         app.setState(data);
     }
+}
 
-};
+// connect to the server and start the app
+var connection = new Connection({
+    onConnect: onConnect,
+    onMessage: onMessage
+});
