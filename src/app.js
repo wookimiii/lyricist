@@ -5,7 +5,7 @@ React.initializeTouchEvents(true)
 
 var Presentation = require('./presentation.js');
 var MenuBar = require('./MenuBar.js');
-var Form = require('./Form.js');
+var Form = require('./form.js');
 var Connection = require('./connection.js');
 var app = null;
 
