@@ -1,24 +1,42 @@
 var SockJS = require('sockjs-client');
 
 module.exports = function (settings) {
-    
-    var sock = new SockJS('/state');
+    var sock = null;
+    var reconnecting = null;
 
-    sock.onopen = settings.onConnect;
+    function connect() {
+        console.log("Connecting");
+        sock = new SockJS('/state');
+        sock.onopen = function () {
+            if (reconnecting) {
+                clearInterval(reconnecting);
+                reconnecting = null;
+            }
+            settings.onConnect();
+        }
 
-    sock.onclose = function() {
-        // console.log('close');
-    };
+        sock.onmessage = function(e) {
+            var data = JSON.parse(e.data);
+            settings.onMessage(data);
+        };
 
-    sock.onmessage = function(e) {
-        var data = JSON.parse(e.data);
-        settings.onMessage(data);
-    };
-
-    this.broadcast = function (data) {
-        console.log('sending', data);
-        sock.send(JSON.stringify(data));
+        sock.onclose = function() {
+            console.log("Connection closed!");
+            if (!reconnecting) {
+                // connect();
+                reconnecting = window.setInterval(connect, 1000);
+            }
+        };
     }
 
+
+
+
+    this.broadcast = function (data) {
+        if (sock)
+            sock.send(JSON.stringify(data));
+    }
+
+    connect();
     return this;    
 }
