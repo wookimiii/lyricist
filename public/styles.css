@@ -42,7 +42,7 @@ and (orientation : portrait) {
     box-sizing: border-box;
     text-align: center;
     color: #555;
-    font-size: 35px;
+    font-size: 40px;
 
     /* padding: 100px 0; */
     -webkit-transform-style: preserve-3d;
