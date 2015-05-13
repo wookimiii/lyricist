@@ -2,4 +2,4 @@
 
 watchify src/app.js -v -o public/app.min.js &
 
-nodemon -e js,html,txt,css --watch src/ server.js
+nodemon -e js,html,txt,css --watch src/ --watch public server.js

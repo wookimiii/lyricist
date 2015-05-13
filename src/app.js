@@ -95,6 +95,7 @@ var App = React.createClass({
 function onConnect() {
     // console.log('open');
     app = React.render(<App />, document.body);
+    connection.broadcast({sys: "id", id: ID});
     connection.broadcast({sys: "sync"});
 }
 
