@@ -19,7 +19,7 @@ var Presentation = React.createClass({
     getDefaultProps: function () {
        return {
            current: 0,
-           text: "Welcome to the Slide Show blah",
+           text: "Welcome to the Slide Show",
        };
     },
 
@@ -62,7 +62,7 @@ var Presentation = React.createClass({
 
         return (
             <div id='wrapper'>
-                <div id='presentation' style={presStyle}>
+                <div id='presentation' style={presStyle} className={this.props.mode}>
                     {slides}
                 </div>
             </div>
@@ -70,7 +70,6 @@ var Presentation = React.createClass({
     },
 
     componentDidMount: function () {
-        console.log("Presentation mount", this.props.current);
         // this.props.gotoSlide(this.props.current || 0);
         key('up', this.prevSlide);
         key('down', this.nextSlide);

@@ -17,14 +17,15 @@ var App = React.createClass({
             page: "presentation",
             text: "Welcome to the Slide Show!",
             blackOut: false,
-            currentSlide: 0
+            currentSlide: 0,
+            mode: 'default'
         };
     },
     render: function() {
         var page = this.state.page;
         return (
             <div onKeyPress={this.handleKeyPress}>
-                <MenuBar gotoPage={this.gotoPage} toggleBlackout={this.toggleBlackout}/>
+                <MenuBar gotoPage={this.gotoPage} toggleBlackout={this.toggleBlackout} toggleVerseMode={this.toggleVerseMode}/>
                 {this.show(page)}
                 <div id='blackout' className={this.state.blackout ? '' : 'hidden'}></div>
             </div>
@@ -48,6 +49,7 @@ var App = React.createClass({
     presentation: function () {
         var props = {
             text: this.state.text,
+            mode: this.state.mode,
             current: this.state.currentSlide,
             gotoSlide: this.gotoSlide
         };
@@ -69,6 +71,13 @@ var App = React.createClass({
 
     gotoPage: function(page) {
         this.setState({page: page});
+    },
+
+    toggleVerseMode: function() {
+        var mode = this.state.mode === 'verses' ?
+                    'default' :
+                    'verses'
+        this.setState({mode: mode});
     },
 
     toggleBlackout: function () {
