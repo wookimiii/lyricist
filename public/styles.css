@@ -11,6 +11,20 @@ body {
 }
 
 
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 568px) {
+    udo apt-get update* STYLES GO HERE */
+    #wrapper {
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #presentation {
+        top: 0px !important;
+    }
+}
+
 @media only screen
 and (max-width : 667px)
 and (orientation : portrait) {
@@ -33,6 +47,7 @@ and (orientation : portrait) {
     -o-transition: all 0.3s linear;
     -ms-transition: all 0.3s linear;
     transition: all 0.3s linear;
+    cursor: none
 }
 
 #presentation.verses {
