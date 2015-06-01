@@ -73,6 +73,7 @@ and (orientation : portrait) {
     height: 100vh;
     max-height: 100vh;
     text-align: left;
+    padding-left: 40px;
 }
 
 .lyrics {
