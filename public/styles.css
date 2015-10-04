@@ -112,8 +112,11 @@ and (orientation : portrait) {
 
 #text {
     position: relative;
-    width: 50%;
+    width: 75%;
     min-height: 500px;
+    height: 90vh;
+    padding: 10px;
+    font-size: 1.1em;
 }
 
 .menu {
@@ -160,9 +163,10 @@ and (orientation : portrait) {
     -o-transition: all 0.5s linear;
     -ms-transition: all 0.5s linear;
     transition: all 0.5s linear;
+    cursor: none;
 }
 
 .hidden {
-    z-index: -1;
     opacity: 0;
+    visibility: hidden;
 }

@@ -92,6 +92,7 @@ var App = React.createClass({
         key('space', this.toggleBlackout);
         key('p', this.gotoPage.bind(null, 'presentation'));
         key('e', this.gotoPage.bind(null, 'form'));
+        key('v', this.toggleVerseMode);
     },
 
     componentWillUnmount: function () {
