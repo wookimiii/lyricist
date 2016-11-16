@@ -152,6 +152,9 @@ and (orientation : portrait) {
 }
 
 #blackout {
+    cursor: none;
+}
+#blackout, #screensaver {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -163,7 +166,37 @@ and (orientation : portrait) {
     -o-transition: all 0.5s linear;
     -ms-transition: all 0.5s linear;
     transition: all 0.5s linear;
-    cursor: none;
+    text-align: center;
+}
+
+#screensaver .form {
+    position: fixed;
+    top: 0;
+    text-align: center;
+    padding: 30px;
+    width: 100%;
+    z-index: 99;
+}
+
+#screensaver .form.hoverMode {
+    opacity: 0;
+}
+
+#screensaver .form.hoverMode:hover {
+    opacity: 1;
+}
+
+#screensaver input{
+    font-size: 1.2em;
+    width: 100px;
+}
+
+#screensaver img {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: 98;
+    cursor: none
 }
 
 .hidden {

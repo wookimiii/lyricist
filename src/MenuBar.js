@@ -32,6 +32,7 @@ var MenuBar = React.createClass({
                         <a onClick={this.gotoPage.bind(null, "presentation")}>Present</a>
                         <a onClick={this.props.toggleVerseMode}>Verse Mode</a>
                         <a onClick={this.props.toggleBlackout}>Blackout</a>
+                        <a onClick={this.props.toggleScreensaver}>Screensaver</a>
                     </div>
                     {overlay}
                 </div>
