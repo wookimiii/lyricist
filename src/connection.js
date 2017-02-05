@@ -16,6 +16,7 @@ module.exports = function (settings) {
         }
 
         sock.onmessage = function(e) {
+            console.log(e)
             var data = JSON.parse(e.data);
             settings.onMessage(data);
         };

@@ -31,6 +31,7 @@ var server = http.createServer(function (req, res) {
 var SOCKJS_URL = 'http://cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js';
 var CONNECTIONS = {};
 var socketServer = sockjs.createServer({ sockjs_url: SOCKJS_URL});
+var TEXTS = {}
 
 socketServer.on('connection', function(conn) {
     CONNECTIONS[conn.id] = conn;
@@ -39,7 +40,15 @@ socketServer.on('connection', function(conn) {
         // if identification message
         if (msg.sys === "id") {
             conn.presentation_id = msg.id;
+
+            if (TEXTS[msg.id]) {
+                conn.write(JSON.stringify({text: TEXTS[msg.id]}))
+            }
         } else {
+            if (msg.text) {
+                TEXTS[conn.presentation_id] = msg.text;
+            }
+            // console.log(TEXTS)
             broadcast(message, conn);
         }
     });

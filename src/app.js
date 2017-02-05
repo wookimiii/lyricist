@@ -7,8 +7,7 @@ var Presentation = require('./presentation.js');
 var MenuBar = require('./MenuBar.js');
 var Form = require('./form.js');
 var Connection = require('./connection.js');
-var app = null;
-window.app = app;
+var app = window.app = {};
 
 var key = require('keymaster');
 
@@ -136,7 +135,7 @@ var App = React.createClass({
 
 function onConnect() {
     // console.log('open');
-    window.app = React.render(<App />, document.body);
+    app = React.render(<App />, document.body);
     connection.broadcast({sys: "id", id: ID});
     connection.broadcast({sys: "sync"});
 }
