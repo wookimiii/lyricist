@@ -194,9 +194,6 @@ and (orientation : portrait) {
 }
 
 #screensaver img {
-    width: 100vw;
-    height: 100vh;
-    object-fit: cover;
     z-index: 98;
     cursor: none
 }
